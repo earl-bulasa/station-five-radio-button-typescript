@@ -5,7 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 
-export default function RadioGroupItem({items, label, index, answer, updateAnswer, answers, rules, latestAnswer}) 
+export default function RadioGroupItem({items, label, index, answer, updateAnswer, answers, rules, latestAnswer, previousAnswer}) 
 {
 	function handleChange(e) 
 	{
@@ -14,7 +14,8 @@ export default function RadioGroupItem({items, label, index, answer, updateAnswe
 	}
 
 	useEffect(() => {
-		if(latestAnswer === null) {
+		// console.log('previous_answer', previousAnswer, index)
+		if(previousAnswer === null) {
 			updateAnswer(null, index)
 		}
 
@@ -28,7 +29,7 @@ export default function RadioGroupItem({items, label, index, answer, updateAnswe
 			}
 		});
 		
-	}, [latestAnswer]);
+	}, [previousAnswer]);
 	
 	
 
@@ -40,15 +41,28 @@ export default function RadioGroupItem({items, label, index, answer, updateAnswe
 				items.map((item) => {
 					let in_rule = false;
 					if(index > 0) {
-						answers.map((a) => {
+						// answers.map((a) => {
+						// 	const rule = rules[a];
+						// 	// const rule = previousAnswer.some(r => rules.includes(r));
+						// 	if(typeof rule !== "undefined") {
+						// 		in_rule = rule.includes(parseInt(item.id))
+						// 		if(in_rule) {
+						// 			break;
+						// 		}
+						// 		// console.log('in_rule', in_rule);
+						// 	}
+						// });
+						const has_rule = answers.filter((a) => {
 							const rule = rules[a];
-							// const rule = previousAnswer.some(r => rules.includes(r));
 							if(typeof rule !== "undefined") {
-								in_rule = rule.includes(parseInt(item.id))
+								return rule.includes(parseInt(item.id))
 							}
-						});
+						})
+						in_rule = has_rule.length > 0;
+						console.log(has_rule, in_rule);
 					}
-					return <FormControlLabel value={item.id} control={<Radio />} label={item.value} key={item.id} disabled={(answers === null && index > 0) || in_rule} />
+					// console.log(previousAnswer, item.value, in_rule);
+					return <FormControlLabel value={item.id} control={<Radio />} label={item.value} key={item.id} disabled={(previousAnswer === null && index > 0) || in_rule} />
 				})
 			}
 			</RadioGroup>
