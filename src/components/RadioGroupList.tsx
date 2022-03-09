@@ -56,7 +56,7 @@ export default function RadioGroupList() {
         <form>
 			{
 				menus.map((menu, index) => (
-					<RadioGroupItem items={menu} label={"Group " + index} index={index} answer={answers[index]} updateAnswer={updateAnswer} answers={index > 0 ? answers : []} rules={rules} key={index} latestAnswer={latestAnswer} previousAnswer={index > 0 ? answers[index - 1] : null} />
+					<RadioGroupItem items={menu} label={"Group " + (index + 1)} index={index} answer={answers[index]} updateAnswer={updateAnswer} answers={index > 0 ? answers : []} rules={rules} key={index} latestAnswer={latestAnswer} previousAnswer={index > 0 ? answers[index - 1] : null} />
 				))
 			}
             <Button variant="contained" className="Submit-button" type="submit" disabled={answers.includes(null)}>Save</Button>
